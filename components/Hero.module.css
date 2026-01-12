@@ -1,0 +1,136 @@
+.hero {
+    position: relative;
+    height: 90vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: var(--header-height);
+    overflow: hidden;
+    background: #000;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    /* Ensure parallax elements don't spill */
+}
+
+.imageWrapper {
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    width: 110%;
+    /* Larger than container for movement room */
+    height: 110%;
+    transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Smooth lag */
+    will-change: transform;
+}
+
+.backgroundImage {
+    object-fit: cover;
+    opacity: 0.7;
+}
+
+/* 3D Grid Overlay */
+.gridOverlay {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+    transform-origin: center center;
+    pointer-events: none;
+    z-index: 1;
+    transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 0%, #000 90%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.content {
+    position: relative;
+    z-index: 3;
+    color: #FFFFFF;
+    max-width: 900px;
+    padding-left: 5%;
+}
+
+.slogan {
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.03em;
+    background: linear-gradient(to right, #fff, #bbb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+    /* Reveal Animation */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.highlight {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+    background: none;
+}
+
+.actions {
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+.primaryBtn,
+.secondaryBtn {
+    z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .slogan {
+        font-size: 3rem;
+    }
+
+    .imageWrapper {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+}

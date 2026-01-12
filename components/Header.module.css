@@ -1,0 +1,104 @@
+.header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: var(--header-height);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    .header {
+        background: rgba(15, 15, 15, 0.9);
+        /* Dark background for dark mode */
+    }
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    color: var(--foreground);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+/* Nav Link - Architectural Minimalist */
+.link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--foreground-muted);
+    position: relative;
+    padding: 4px 0;
+    transition: color 0.3s ease;
+}
+
+.link:hover,
+.link.active {
+    color: var(--foreground);
+}
+
+/* Elegant Underline */
+.link::after {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--foreground);
+    transition: width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.link:hover::after,
+.link.active::after {
+    width: 100%;
+}
+
+/* CTA "Modern Luxury" Button */
+.cta {
+    padding: 12px 30px;
+    background: transparent;
+    color: var(--foreground);
+    border-radius: 12px;
+    /* Soft modern curve */
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--border);
+    /* Subtle border */
+    backdrop-filter: blur(8px);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.cta:hover {
+    background: var(--foreground);
+    color: var(--background);
+    border-color: var(--foreground);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove previous legacy styles */
+.cta::before,
+.cta::after {
+    display: none;
+}
