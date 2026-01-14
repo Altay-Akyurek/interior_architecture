@@ -32,7 +32,7 @@ export default async function AdminDashboard() {
                                 <td style={{ padding: '1rem' }}>{project.category}</td>
                                 <td style={{ padding: '1rem' }}>{new Date(project.createdAt).toLocaleDateString('tr-TR')}</td>
                                 <td style={{ padding: '1rem' }}>
-                                    <Link href={`/admin/projects/${project.id}`} style={{ marginRight: '1rem', color: 'blue' }}>Düzenle</Link>
+                                    <Link href={`/admin/projects/${project.id}`} style={{ marginRight: '1rem', color: '#1358D8', textDecoration: 'none' }}>Düzenle</Link>
                                 </td>
                             </tr>
                         ))}

@@ -67,6 +67,18 @@ body {
   line-height: 1.6;
 }
 
+/* Light mode default - açık renkler */
+html:not(.dark) body {
+  background: #FAFAF8 !important;
+  color: #2D3436 !important;
+}
+
+/* Dark mode */
+html.dark body {
+  background: #021526 !important;
+  color: #DFE6E9 !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -77,13 +89,7 @@ a:hover {
   opacity: 0.7;
 }
 
-/* Utilities */
-.container {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 24px;
-}
+/* Utilities - Tailwind will override this */
 
 .section {
   padding: 120px 0;
@@ -148,4 +154,146 @@ h6 {
   animation-delay: 0.3s;
   opacity: 0;
   animation-fill-mode: forwards;
+}
+
+/* New Design Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    box-sizing: border-box;
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer utilities {
+  .btn {
+    @apply bg-primary text-white py-3 px-8 rounded-lg hover:bg-secondary cursor-pointer transition-all duration-[0.4s] inline-block;
+  }
+}
+
+@layer base {
+  .container {
+    @apply w-full max-w-1100 mx-auto px-6;
+  }
+}
+
+@layer components {
+  section {
+    @apply md:py-20 py-10;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-SlateBlue text-base font-normal;
+  }
+
+  h1 {
+    @apply md:text-[52px] md:leading-[3.75rem] text-[40px] leading-[3rem] font-bold;
+  }
+
+  h2 {
+    @apply md:text-4xl text-[28px] leading-[2.25rem] font-bold;
+  }
+
+  select {
+    @apply appearance-none bg-[url('/images/contact/dropdown.svg')] bg-no-repeat bg-[90%_50%];
+  }
+}
+
+/* Hero Section Animations */
+@keyframes topshap {
+  0% {
+    top: -60px;
+    left: -60px;
+  }
+  50% {
+    top: -80px;
+    left: -60px;
+  }
+  100% {
+    top: -60px;
+    left: -60px;
+  }
+}
+
+@keyframes bottomshap {
+  0% {
+    bottom: 60px;
+    right: -90px;
+  }
+  50% {
+    bottom: 80px;
+    right: -90px;
+  }
+  100% {
+    bottom: 60px;
+    right: -90px;
+  }
+}
+
+.it-wrapper::before {
+  @apply content-[''] absolute -top-[6.25rem] -left-[6.25rem] w-[19.125rem] h-[19.125rem] bg-darkprimary rounded-full z-1;
+  animation: topshap 2s infinite;
+}
+
+.it-wrapper::before {
+  @apply lg:inline-block hidden;
+}
+
+.circalanimat::after {
+  @apply content-[''] absolute bottom-[3.75rem] -right-[5.625rem] w-[19.125rem] h-[19.125rem] bg-LightApricot rounded-full block;
+  animation: bottomshap 2s infinite;
+}
+
+.circalanimat::after {
+  @apply lg:inline-block hidden;
+}
+
+.banner-shap::after {
+  @apply content-[''] absolute left-0 w-full h-[18.75rem] bg-primary -bottom-[5.1875rem];
+  clip-path: ellipse(56% 50%);
+}
+
+@media only screen and (max-width: 768px) {
+  .banner-shap::after {
+    clip-path: ellipse(75% 50%);
+  }
+}
+
+/* FAQ section css */
+.accordion__item:not(:last-child) {
+  @apply border-b-BorderLine dark:border-dark_border border-b border-solid;
+}
+
+.accordion__item--active .accordion__btn {
+  @apply border-b-2 border-solid border-BorderLine dark:border-primary text-primary dark:text-primary;
+}
+
+.accordion__item--active .accordion__content {
+  @apply opacity-100 translate-x-0 max-h-full;
+}
+
+.accordion__item--active .accordion__content {
+  @apply opacity-100 max-h-[50rem] translate-y-0;
+}
+
+.icon-fill {
+  fill: var(--icon-color);
+}
+
+.light .icon-fill {
+  --icon-color: #102d47;
+}
+
+.dark .icon-fill {
+  --icon-color: #ffffff;
 }

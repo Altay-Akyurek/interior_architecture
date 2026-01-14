@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String   // "Konut", "Ofis", "Ticari"
+  description String
+  coverImage  String
+  images      Image[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Image {
+  id        String  @id @default(cuid())
+  url       String
+  caption   String?
+  type      String  // "gallery", "before", "after"
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+}

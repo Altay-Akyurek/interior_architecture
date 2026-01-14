@@ -1,13 +1,55 @@
 'use client';
 
 import { createProject } from '../../actions';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function NewProjectPage() {
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        try {
+            const formData = new FormData(e.currentTarget);
+            const result = await createProject(formData);
+            
+            if (result?.success) {
+                router.push('/admin');
+                router.refresh();
+            } else {
+                setError(result?.error || 'Proje oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.');
+                setLoading(false);
+            }
+        } catch (err: any) {
+            console.error('Error creating project:', err);
+            setError(err?.message || 'Proje oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.');
+            setLoading(false);
+        }
+    };
+
     return (
         <div>
             <h1 style={{ marginBottom: '2rem' }}>Yeni Proje Ekle</h1>
 
-            <form action={createProject} style={{ background: '#fff', padding: '2rem', borderRadius: '8px', maxWidth: '800px' }}>
+            {error && (
+                <div style={{ 
+                    background: '#fee', 
+                    border: '1px solid #fcc', 
+                    color: '#c33', 
+                    padding: '1rem', 
+                    borderRadius: '4px', 
+                    marginBottom: '1rem' 
+                }}>
+                    {error}
+                </div>
+            )}
+
+            <form onSubmit={handleSubmit} style={{ background: '#fff', padding: '2rem', borderRadius: '8px', maxWidth: '800px' }}>
 
                 <div style={{ marginBottom: '1.5rem' }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Proje Başlığı</label>
@@ -39,8 +81,20 @@ export default function NewProjectPage() {
                     <input type="file" name="galleryImages" accept="image/*" multiple style={{ width: '100%' }} />
                 </div>
 
-                <button type="submit" style={{ padding: '12px 24px', background: '#000', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 600 }}>
-                    Projeyi Kaydet
+                <button 
+                    type="submit" 
+                    disabled={loading}
+                    style={{ 
+                        padding: '12px 24px', 
+                        background: loading ? '#666' : '#000', 
+                        color: '#fff', 
+                        border: 'none', 
+                        borderRadius: '4px', 
+                        cursor: loading ? 'not-allowed' : 'pointer', 
+                        fontWeight: 600 
+                    }}
+                >
+                    {loading ? 'Kaydediliyor...' : 'Projeyi Kaydet'}
                 </button>
 
             </form>

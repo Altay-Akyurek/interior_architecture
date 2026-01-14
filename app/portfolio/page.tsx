@@ -41,14 +41,21 @@ export default async function PortfolioPage() {
                         <ScrollReveal key={project.id} delay={index * 100}>
                             <Link href={`/portfolio/${project.slug}`} className={styles.card}>
                                 <div className={styles.imageContainer}>
-                                    <Image
-                                        src={project.coverImage}
-                                        alt={project.title}
-                                        fill
-                                        style={{ objectFit: 'cover' }}
-                                        className={styles.image}
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    />
+                                    {project.coverImage ? (
+                                        <Image
+                                            src={project.coverImage}
+                                            alt={project.title}
+                                            fill
+                                            style={{ objectFit: 'cover' }}
+                                            className={styles.image}
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            unoptimized
+                                        />
+                                    ) : (
+                                        <div style={{ width: '100%', height: '100%', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            <span style={{ color: '#999' }}>Görsel Yok</span>
+                                        </div>
+                                    )}
                                     <div className={styles.overlay}>
                                         <span className={styles.viewBtn}>İncele</span>
                                     </div>

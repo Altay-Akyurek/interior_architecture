@@ -46,14 +46,16 @@ export default function ContactPage() {
                 {/* Contact Form */}
                 <div style={{ background: 'var(--background-alt)', padding: '3rem', borderRadius: '4px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                        <Image
-                            src="/assets/logo-text.png"
-                            alt="PUAR"
-                            width={200}
-                            height={60}
-                            style={{ objectFit: 'contain' }}
-                            quality={100}
-                        />
+                        <div style={{ position: 'relative', width: '50px', height: '50px', flexShrink: 0 }}>
+                            <Image
+                                src="/assets/logo-icon.jpg"
+                                alt="PUAR Logo"
+                                fill
+                                style={{ objectFit: 'cover', borderRadius: '50%' }}
+                                quality={100}
+                                unoptimized
+                            />
+                        </div>
                         <h3 style={{ margin: 0 }}>Teklif Formu</h3>
                     </div>
                     <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

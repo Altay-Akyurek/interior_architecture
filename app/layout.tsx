@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
+import Aoscompo from "@/utils/aos";
+import NextTopLoader from "nextjs-toploader";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
+import ConditionalLayout from "@/components/ConditionalLayout";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const dmsans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "PUAR İç Mimarlık | Fonksiyonel & Estetik Mekânlar",
   description: "İç Mimar Web Sitesi - Konut, Ofis, Ticari Projeler",
 };
-
-import Header from "@/components/Header";
 
 export default function RootLayout({
   children,
@@ -25,10 +20,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Header />
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={dmsans.className}>
+        <SessionProviderWrapper>
+          <ThemeProvider
+            attribute="class"
+            enableSystem={true}
+            defaultTheme="system"
+          >
+            <Aoscompo>
+              <NextTopLoader color='#f9c78f' />
+              <ConditionalLayout>
+                {children}
+              </ConditionalLayout>
+            </Aoscompo>
+          </ThemeProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );

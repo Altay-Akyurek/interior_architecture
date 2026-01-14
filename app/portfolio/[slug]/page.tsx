@@ -11,8 +11,9 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props) {
+    const { slug } = await params;
     const project = await prisma.project.findUnique({
-        where: { slug: params.slug },
+        where: { slug },
     });
     if (!project) return { title: 'Proje Bulunamadı' };
     return {
@@ -22,8 +23,9 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function ProjectDetailPage({ params }: Props) {
+    const { slug } = await params;
     const project = await prisma.project.findUnique({
-        where: { slug: params.slug },
+        where: { slug },
         include: { images: true },
     });
 
@@ -41,13 +43,20 @@ export default async function ProjectDetailPage({ params }: Props) {
             </header>
 
             <div className={styles.heroImage}>
-                <Image
-                    src={project.coverImage}
-                    alt={project.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    priority
-                />
+                {project.coverImage ? (
+                    <Image
+                        src={project.coverImage}
+                        alt={project.title}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        priority
+                        unoptimized
+                    />
+                ) : (
+                    <div style={{ width: '100%', height: '100%', background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span>Görsel Yok</span>
+                    </div>
+                )}
             </div>
 
             <div className={styles.content}>
