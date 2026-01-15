@@ -7,7 +7,7 @@ import styles from './project.module.css';
 export const revalidate = 60;
 
 interface Props {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props) {

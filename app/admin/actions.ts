@@ -7,7 +7,7 @@ import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-async function uploadFile(file: File): Promise<string> {
+async function uploadFile(file: File): Promise<string | null> {
     try {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
@@ -17,16 +17,27 @@ async function uploadFile(file: File): Promise<string> {
         const uploadsDir = join(process.cwd(), 'public', 'uploads');
         const filePath = join(uploadsDir, filename);
 
-        // Ensure uploads directory exists
+        // Ensure uploads directory exists - this will fail on Vercel
         if (!existsSync(uploadsDir)) {
-            await mkdir(uploadsDir, { recursive: true });
+            try {
+                await mkdir(uploadsDir, { recursive: true });
+            } catch (mkdirError) {
+                console.warn('Could not create uploads directory (expected on Vercel):', mkdirError);
+                return null;
+            }
         }
 
-        await writeFile(filePath, buffer);
+        try {
+            await writeFile(filePath, buffer);
+        } catch (writeError) {
+            console.warn('Could not write file to disk (expected on Vercel):', writeError);
+            return null;
+        }
+
         return `/uploads/${filename}`;
     } catch (error) {
         console.error('uploadFile error:', error);
-        throw new Error('Dosya yüklenirken bir hata oluştu.');
+        return null; // Return null instead of throwing to prevent generic "Server-Side Exception" crash
     }
 }
 
@@ -49,12 +60,11 @@ export async function createProject(formData: FormData) {
 
         let coverImageUrl = '';
         if (coverFile && coverFile.size > 0) {
-            try {
-                coverImageUrl = await uploadFile(coverFile);
-            } catch (uploadError) {
-                console.error('File upload error:', uploadError);
-                throw new Error('Kapak görseli yüklenirken bir hata oluştu.');
+            const uploadedUrl = await uploadFile(coverFile);
+            if (!uploadedUrl) {
+                throw new Error('Görsel yüklenemedi. Sunucu diskine yazma izni olmayabilir (örn. Vercel).');
             }
+            coverImageUrl = uploadedUrl;
         }
 
         // Create Project
@@ -79,8 +89,8 @@ export async function createProject(formData: FormData) {
 
         for (const file of galleryFiles) {
             if (file && file.size > 0) {
-                try {
-                    const url = await uploadFile(file);
+                const url = await uploadFile(file);
+                if (url) {
                     await prisma.image.create({
                         data: {
                             url,
@@ -88,23 +98,20 @@ export async function createProject(formData: FormData) {
                             projectId: project.id,
                         },
                     });
-                } catch (imageError) {
-                    console.error('Gallery image upload error:', imageError);
-                    // Continue with other images even if one fails
                 }
             }
         }
 
         revalidatePath('/portfolio');
         revalidatePath('/admin');
-        
+
         // Return success instead of redirect
         return { success: true, projectId: project.id };
     } catch (error: any) {
         console.error('createProject error:', error);
-        return { 
-            success: false, 
-            error: error?.message || 'Proje oluşturulurken bir hata oluştu.' 
+        return {
+            success: false,
+            error: error?.message || 'Proje oluşturulurken bir hata oluştu.'
         };
     }
 }
@@ -135,12 +142,11 @@ export async function updateProject(projectId: string, formData: FormData) {
 
         // Upload new cover image if provided
         if (coverFile && coverFile.size > 0) {
-            try {
-                updateData.coverImage = await uploadFile(coverFile);
-            } catch (uploadError) {
-                console.error('File upload error:', uploadError);
-                throw new Error('Kapak görseli yüklenirken bir hata oluştu.');
+            const uploadedUrl = await uploadFile(coverFile);
+            if (!uploadedUrl) {
+                throw new Error('Görsel yüklenemedi. Sunucu diskine yazma izni olmayabilir (örn. Vercel).');
             }
+            updateData.coverImage = uploadedUrl;
         }
 
         // Update Project
@@ -159,8 +165,8 @@ export async function updateProject(projectId: string, formData: FormData) {
 
         for (const file of galleryFiles) {
             if (file && file.size > 0) {
-                try {
-                    const url = await uploadFile(file);
+                const url = await uploadFile(file);
+                if (url) {
                     await prisma.image.create({
                         data: {
                             url,
@@ -168,9 +174,6 @@ export async function updateProject(projectId: string, formData: FormData) {
                             projectId: projectId,
                         },
                     });
-                } catch (imageError) {
-                    console.error('Gallery image upload error:', imageError);
-                    // Continue with other images even if one fails
                 }
             }
         }
@@ -178,13 +181,13 @@ export async function updateProject(projectId: string, formData: FormData) {
         revalidatePath('/portfolio');
         revalidatePath('/admin');
         revalidatePath(`/admin/projects/${projectId}`);
-        
+
         return { success: true };
     } catch (error: any) {
         console.error('updateProject error:', error);
-        return { 
-            success: false, 
-            error: error?.message || 'Proje güncellenirken bir hata oluştu.' 
+        return {
+            success: false,
+            error: error?.message || 'Proje güncellenirken bir hata oluştu.'
         };
     }
 }
@@ -203,13 +206,13 @@ export async function deleteProject(projectId: string) {
 
         revalidatePath('/portfolio');
         revalidatePath('/admin');
-        
+
         return { success: true };
     } catch (error: any) {
         console.error('deleteProject error:', error);
-        return { 
-            success: false, 
-            error: error?.message || 'Proje silinirken bir hata oluştu.' 
+        return {
+            success: false,
+            error: error?.message || 'Proje silinirken bir hata oluştu.'
         };
     }
 }
@@ -219,14 +222,14 @@ export async function deleteImage(imageId: string) {
         await prisma.image.delete({
             where: { id: imageId },
         });
-        
+
         revalidatePath('/admin');
         return { success: true };
     } catch (error: any) {
         console.error('deleteImage error:', error);
-        return { 
-            success: false, 
-            error: error?.message || 'Görsel silinirken bir hata oluştu.' 
+        return {
+            success: false,
+            error: error?.message || 'Görsel silinirken bir hata oluştu.'
         };
     }
 }
