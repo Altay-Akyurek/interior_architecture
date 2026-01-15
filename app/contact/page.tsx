@@ -8,70 +8,80 @@ export const metadata = {
 export default function ContactPage() {
     return (
         <main className="container section">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
 
                 {/* Contact Info */}
-                <div>
-                    <h1 style={{ marginBottom: '2rem' }}>İletişime Geçin</h1>
-                    <p style={{ fontSize: '1.2rem', marginBottom: '3rem', color: 'var(--foreground-muted)' }}>
-                        Projeniz için ücretsiz ön görüşme yapalım. Hayalinizdeki mekanı birlikte tasarlayalım.
-                    </p>
+                <div className="flex flex-col gap-8">
+                    <div>
+                        <h1 className="mb-8">İletişime Geçin</h1>
+                        <p className="text-lg mb-12 text-[var(--foreground-muted)]">
+                            Projeniz için ücretsiz ön görüşme yapalım. Hayalinizdeki mekanı birlikte tasarlayalım.
+                        </p>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                        <div>
-                            <h3 style={{ marginBottom: '0.5rem' }}>Telefon / WhatsApp</h3>
-                            <p style={{ fontSize: '1.1rem' }}>+90 555 000 00 00</p>
-                        </div>
-                        <div>
-                            <h3 style={{ marginBottom: '0.5rem' }}>E-posta</h3>
-                            <p style={{ fontSize: '1.1rem' }}>info@puaricmimarlik.com</p>
-                        </div>
-                        <div>
-                            <h3 style={{ marginBottom: '0.5rem' }}>Sosyal Medya</h3>
-                            <a href="#" style={{ textDecoration: 'underline' }}>Instagram: @puaricmimarlik</a>
-                        </div>
-                        <div>
-                            <h3 style={{ marginBottom: '0.5rem' }}>Ofis</h3>
-                            <p style={{ color: 'var(--foreground-muted)' }}>
-                                İstanbul, Türkiye<br />(Konum bilgisi eklenecek)
-                            </p>
-                            {/* Maps Placeholder */}
-                            <div style={{ width: '100%', height: '200px', background: '#EEE', marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                Google Maps Placeholder
+                        <div className="flex flex-col gap-8">
+                            <div>
+                                <h3 className="mb-2">Telefon / WhatsApp</h3>
+                                <p className="text-lg">+90 555 000 00 00</p>
+                            </div>
+                            <div>
+                                <h3 className="mb-2">E-posta</h3>
+                                <p className="text-lg">info@puaricmimarlik.com</p>
+                            </div>
+                            <div>
+                                <h3 className="mb-2">Sosyal Medya</h3>
+                                <a href="#" className="underline">Instagram: @puaricmimarlik</a>
+                            </div>
+                            <div>
+                                <h3 className="mb-2">Ofis</h3>
+                                <p className="text-[var(--foreground-muted)]">
+                                    İstinye mah. İstinye Cad. No: 66, Da:6<br />Sarıyer / İstanbul / Türkiye
+                                </p>
+                                {/* Maps Integration */}
+                                <div className="w-full h-[300px] mt-4 rounded-lg overflow-hidden border border-[var(--border)]">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3005.914835425793!2d29.054672!3d41.11455099999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab6269cae66cd%3A0x55fde11c29785e27!2zUHVhciDEsMOnIE1pbWFybMSxayB2ZSBUYXNhcsSxbSBUaWMuIEx0ZC4gxZ50aS4!5e0!3m2!1str!2str!4v1768422409753!5m2!1str!2str"
+                                        width="100%"
+                                        height="100%"
+                                        style={{ border: 0 }}
+                                        allowFullScreen
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                    ></iframe>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Contact Form */}
-                <div style={{ background: 'var(--background-alt)', padding: '3rem', borderRadius: '4px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                        <div style={{ position: 'relative', width: '50px', height: '50px', flexShrink: 0 }}>
+                <div className="bg-[var(--background-alt)] p-6 md:p-12 rounded-sm h-fit">
+                    <div className="flex items-center gap-4 mb-8">
+                        <div className="relative w-12 h-12 flex-shrink-0">
                             <Image
                                 src="/assets/logo-icon.jpg"
                                 alt="PUAR Logo"
                                 fill
-                                style={{ objectFit: 'cover', borderRadius: '50%' }}
+                                className="object-cover rounded-full"
                                 quality={100}
                                 unoptimized
                             />
                         </div>
-                        <h3 style={{ margin: 0 }}>Teklif Formu</h3>
+                        <h3 className="m-0">Teklif Formu</h3>
                     </div>
-                    <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            <label htmlFor="name" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Ad Soyad</label>
-                            <input type="text" id="name" style={{ padding: '12px', borderRadius: '4px', border: '1px solid var(--border)' }} placeholder="Adınız" />
+                    <form className="flex flex-col gap-6">
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="name" className="text-sm font-medium">Ad Soyad</label>
+                            <input type="text" id="name" className="p-3 rounded-sm border border-[var(--border)] bg-transparent" placeholder="Adınız" />
                         </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            <label htmlFor="phone" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Telefon</label>
-                            <input type="tel" id="phone" style={{ padding: '12px', borderRadius: '4px', border: '1px solid var(--border)' }} placeholder="0555..." />
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="phone" className="text-sm font-medium">Telefon</label>
+                            <input type="tel" id="phone" className="p-3 rounded-sm border border-[var(--border)] bg-transparent" placeholder="0555..." />
                         </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            <label htmlFor="type" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Proje Tipi</label>
-                            <select id="type" style={{ padding: '12px', borderRadius: '4px', border: '1px solid var(--border)' }}>
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="type" className="text-sm font-medium">Proje Tipi</label>
+                            <select id="type" className="p-3 rounded-sm border border-[var(--border)] bg-transparent">
                                 <option>Konut</option>
                                 <option>Ofis</option>
                                 <option>Ticari / Mağaza</option>
@@ -80,20 +90,12 @@ export default function ContactPage() {
                             </select>
                         </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                            <label htmlFor="message" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Mesajınız</label>
-                            <textarea id="message" rows={5} style={{ padding: '12px', borderRadius: '4px', border: '1px solid var(--border)', resize: 'vertical' }} placeholder="Projenizden bahsedin..."></textarea>
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="message" className="text-sm font-medium">Mesajınız</label>
+                            <textarea id="message" rows={5} className="p-3 rounded-sm border border-[var(--border)] bg-transparent resize-vertical" placeholder="Projenizden bahsedin..."></textarea>
                         </div>
 
-                        <button type="button" style={{
-                            padding: '16px',
-                            background: 'var(--foreground)',
-                            color: 'var(--background)',
-                            border: 'none',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            marginTop: '1rem'
-                        }}>
+                        <button type="button" className="p-4 bg-[var(--foreground)] text-[var(--background)] border-none font-semibold cursor-pointer mt-4 hover:opacity-90 transition-opacity">
                             GÖNDER
                         </button>
                     </form>
