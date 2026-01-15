@@ -8,27 +8,31 @@ export default async function EditProjectPage({
 }: {
     params: Promise<{ id: string }>;
 }) {
-    const { id } = await params;
-    const project = await prisma.project.findUnique({
-        where: { id },
-        include: {
-            images: true,
-        },
-    });
+    try {
+        const { id } = await params;
+        const project = await prisma.project.findUnique({
+            where: { id },
+            include: {
+                images: true,
+            },
+        });
 
-    if (!project) {
-        redirect('/admin');
-    }
+        if (!project) {
+            redirect('/admin');
+        }
 
-    return (
-        <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h1>Projeyi Düzenle</h1>
-                <DeleteProjectButton projectId={project.id} />
+        return (
+            <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                    <h1>Projeyi Düzenle</h1>
+                    <DeleteProjectButton projectId={project.id} />
+                </div>
+
+                <EditProjectForm project={project} />
             </div>
-
-            <EditProjectForm project={project} />
-        </div>
-    );
+        );
+    } catch (error) {
+        console.error("Error loading admin edit project page:", error);
+        throw error;
+    }
 }
-
