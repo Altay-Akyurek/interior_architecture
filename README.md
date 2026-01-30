@@ -54,7 +54,7 @@ This portfolio website is built to:
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/your-repository.git
+
 Install dependencies:
 
 npm installRun the development server:
